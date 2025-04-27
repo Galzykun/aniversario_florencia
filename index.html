@@ -19,6 +19,35 @@
             height: 100vh;
         }
 
+        /* Estilo da Página Inicial */
+        #welcomeScreen {
+            text-align: center;
+        }
+
+        #welcomeScreen h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        #welcomeScreen button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #simButton {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        #naoButton {
+            background-color: #f44336;
+            color: white;
+        }
+
         /* Estilo do Slideshow */
         .slideshow {
             position: relative;
@@ -26,6 +55,7 @@
             max-width: 600px;
             height: auto;
             margin: auto;
+            display: none; /* Inicialmente oculto */
         }
 
         .slideshow img {
@@ -42,24 +72,44 @@
             white-space: pre-wrap; /* Mantém quebras de linha */
             text-align: center;
             max-width: 80%;
-            overflow-y: auto; /* Adiciona barra de rolagem se necessário */
+            overflow-y: auto; /* Permite rolagem se necessário */
             max-height: 80vh; /* Limita a altura para evitar sair da tela */
             display: none; /* Inicialmente oculto */
-            padding: 10px; /* Espaçamento interno para melhor visualização */
-            scrollbar-width: thin; /* Barra de rolagem fina */
-            scrollbar-color: #ffffff #ff99cc; /* Cor personalizada para a barra de rolagem */
         }
 
-        /* Estilização Responsiva para Celular */
-        @media (max-width: 600px) {
-            #mensagem {
-                font-size: 1rem; /* Reduz o tamanho da fonte em telas menores */
-                max-height: 60vh; /* Altura máxima menor para caber na tela */
-            }
+        /* Estilo para palavras destacadas */
+        .destaque-negrito {
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+        }
+        .destaque-italico {
+            font-style: italic;
+            font-family: 'Pacifico', cursive;
+        }
+        .destaque-sublinhado {
+            text-decoration: underline;
+        }
+        .destaque-caixa-alta {
+            text-transform: uppercase;
+        }
+        .destaque-maiusculo {
+            font-style: italic;
+            text-transform: uppercase;
+        }
+        .destaque-combinado {
+            font-weight: bold;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
+    <!-- Tela Inicial -->
+    <div id="welcomeScreen">
+        <h1>Está Preparada?</h1>
+        <button id="simButton">Sim</button>
+        <button id="naoButton">Não</button>
+    </div>
+
     <!-- Slideshow de Fotos -->
     <div class="slideshow">
         <img src="imagem1.jpg" alt="Imagem 1">
@@ -72,42 +122,40 @@
     <div id="mensagem"></div>
 
     <!-- Música de Fundo -->
-    <audio id="backgroundMusic" preload="auto">
+    <audio id="backgroundMusic" preload="auto" loop>
         <source src="Jessie J - Flashlight.mp3" type="audio/mpeg">
-        <source src="Jessie J - Flashlight.ogg" type="audio/ogg">
-        <source src="Jessie J - Flashlight.wav" type="audio/wav">
         Seu navegador não suporta áudio.
     </audio>
 
     <script>
-        // Configuração do Slideshow
-        const slideshowImages = document.querySelectorAll('.slideshow img');
-        let currentIndex = 0;
+        // Elementos do DOM
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const simButton = document.getElementById('simButton');
+        const naoButton = document.getElementById('naoButton');
+        const slideshow = document.querySelector('.slideshow');
+        const audio = document.getElementById('backgroundMusic');
 
-        function showNextImage() {
-            // Oculta a imagem atual
-            slideshowImages[currentIndex].style.display = 'none';
+        // Função para iniciar o slideshow
+        function startSlideshow() {
+            const slideshowImages = document.querySelectorAll('.slideshow img');
+            let currentIndex = 0;
 
-            // Avança para a próxima imagem
-            currentIndex = (currentIndex + 1) % slideshowImages.length;
+            function showNextImage() {
+                slideshowImages[currentIndex].style.display = 'none';
+                currentIndex = (currentIndex + 1) % slideshowImages.length;
+                slideshowImages[currentIndex].style.display = 'block';
+            }
 
-            // Exibe a próxima imagem
             slideshowImages[currentIndex].style.display = 'block';
+            const slideshowInterval = setInterval(showNextImage, 5000);
+
+            setTimeout(() => {
+                clearInterval(slideshowInterval);
+                slideshow.style.display = 'none';
+                document.getElementById('mensagem').style.display = 'block';
+                startTypingMessage();
+            }, slideshowImages.length * 5000);
         }
-
-        // Exibe a primeira imagem inicialmente
-        slideshowImages[currentIndex].style.display = 'block';
-
-        // Alterna as imagens a cada 5 segundos
-        const slideshowInterval = setInterval(showNextImage, 5000);
-
-        // Após terminar o slideshow, exibe a mensagem
-        setTimeout(() => {
-            clearInterval(slideshowInterval); // Para o slideshow
-            document.querySelector('.slideshow').style.display = 'none'; // Oculta o slideshow
-            document.getElementById('mensagem').style.display = 'block'; // Exibe a mensagem
-            startTypingMessage(); // Inicia a animação de digitação
-        }, slideshowImages.length * 5000); // Tempo total do slideshow (número de imagens * 5 segundos)
 
         // Função para simular o efeito de digitação
         function startTypingMessage() {
@@ -151,60 +199,25 @@ Porque <span class="destaque-maiusculo">TU MERECES</span> tudo isso e muito mais
                 if (index < fullText.length) {
                     messageElement.innerHTML = fullText.slice(0, index);
                     index++;
-                    setTimeout(typeMessage, 50); // Velocidade de digitação (ajuste conforme necessário)
+                    setTimeout(typeMessage, 50);
                 }
             }
 
             typeMessage();
         }
 
-        // Configuração da Música
-        const audio = document.getElementById('backgroundMusic');
-
-        // Simula interação do usuário para iniciar o áudio automaticamente
-        function simulateUserInteraction() {
-            const invisibleButton = document.createElement('button');
-            invisibleButton.style.position = 'absolute';
-            invisibleButton.style.opacity = '0';
-            invisibleButton.style.pointerEvents = 'none';
-            document.body.appendChild(invisibleButton);
-
-            // Simula um clique no botão invisível
-            invisibleButton.click();
-
-            // Tenta iniciar o áudio após o clique simulado
-            audio.play().then(() => {
-                console.log('Áudio iniciado automaticamente.');
-                document.body.removeChild(invisibleButton); // Remove o botão invisível
-            }).catch((error) => {
-                console.error('Erro ao iniciar o áudio:', error.message);
-                alert('Não foi possível iniciar o áudio automaticamente. Certifique-se de que o site está sendo servido em HTTPS.');
+        // Eventos dos Botões
+        simButton.addEventListener('click', () => {
+            welcomeScreen.style.display = 'none'; // Oculta a tela inicial
+            slideshow.style.display = 'block'; // Exibe o slideshow
+            audio.play().catch((error) => {
+                console.warn('Autoplay bloqueado:', error.message);
             });
-        }
-
-        // Sincroniza áudio e slideshow
-        window.addEventListener('load', () => {
-            // Inicia o áudio automaticamente
-            simulateUserInteraction();
-
-            // Exibe o primeiro slide
-            slideshowImages[currentIndex].style.display = 'block';
-
-            // Alterna os slides a cada 5 segundos
-            const slideshowInterval = setInterval(showNextImage, 5000);
-
-            // Para o slideshow após o tempo total
-            setTimeout(() => {
-                clearInterval(slideshowInterval); // Para o slideshow
-                document.querySelector('.slideshow').style.display = 'none'; // Oculta o slideshow
-                document.getElementById('mensagem').style.display = 'block'; // Exibe a mensagem
-                startTypingMessage(); // Inicia a animação de digitação
-            }, slideshowImages.length * 5000); // Tempo total do slideshow
+            startSlideshow();
         });
 
-        // Garante que o áudio não repita
-        audio.addEventListener('ended', () => {
-            console.log('Áudio concluído.');
+        naoButton.addEventListener('click', () => {
+            alert('Volte quando estiver pronta! 😊');
         });
     </script>
 </body>
