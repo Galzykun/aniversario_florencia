@@ -95,18 +95,30 @@
 
     <!-- Música de fundo -->
     <audio controls preload="auto" autoplay loop>
-        <source src="file:///C:/Users/Galzy/Documents/music.mp3" type="audio/mpeg">
+        <source src="Jessie J - Flashlight.mp3" type="audio/mpeg">
         Seu navegador não suporta áudio.
     </audio>
 
     <!-- Imagens Decorativas -->
-    <img src="file:///C:/Users/Galzy/Pictures/New%20folder/469144520_1128327732159579_5091036514815481969_n_LE_upscale_balanced_x4.jpg" alt="Imagem 1" style="display: block; margin: auto; max-width: 100%; height: auto;">
-    <img src="file:///C:/Users/Galzy/Pictures/New%20folder/446522057_819771990064081_1261925708577938480_n_LE_upscale_balanced_x4.jpg" alt="Imagem 2" style="display: block; margin: auto; max-width: 100%; height: auto;">
-    <img src="file:///C:/Users/Galzy/Pictures/New%20folder/429314349_1081186279824430_3608588112498670001_n_LE_upscale_balanced_x4.jpg" alt="Imagem 3" style="display: block; margin: auto; max-width: 100%; height: auto;">
-    <img src="file:///C:/Users/Galzy/Pictures/New%20folder/105951949_153729339619428_7468417859588472605_n_LE_upscale_balanced_x4.jpg" alt="Imagem 4" style="display: block; margin: auto; max-width: 100%; height: auto;">
+    <img src="105951949_153729339619428_7468417859588472605_n_LE_upscale_balanced_x4.jpg" alt="Imagem 1" style="display: block; margin: auto; max-width: 100%; height: auto;">
+    <img src="429314349_1081186279824430_3608588112498670001_n_LE_upscale_balanced_x4.jpg" alt="Imagem 2" style="display: block; margin: auto; max-width: 100%; height: auto;">
+    <img src="446522057_819771990064081_1261925708577938480_n_LE_upscale_balanced_x4.jpg" alt="Imagem 3" style="display: block; margin: auto; max-width: 100%; height: auto;">
+    <img src="469144520_1128327732159579_5091036514815481969_n_LE_upscale_balanced_x4.jpg" alt="Imagem 4" style="display: block; margin: auto; max-width: 100%; height: auto;">
 
     <script>
-        // Caso queira personalizar mais, pode adicionar interatividade aqui
+        const messageElement = document.getElementById('mensagem');
+        const fullText = messageElement.textContent;
+        let index = 0;
+
+        function typeMessage() {
+            if (index < fullText.length) {
+                messageElement.textContent = fullText.slice(0, index);
+                index++;
+                setTimeout(typeMessage, 50); // Ajuste o tempo para controlar a velocidade de digitação
+            }
+        }
+
+        typeMessage();
     </script>
 </body>
 </html>
