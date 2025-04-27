@@ -103,6 +103,8 @@
     <!-- Música de Fundo -->
     <audio id="backgroundMusic" preload="auto" loop>
         <source src="Jessie J - Flashlight.mp3" type="audio/mpeg">
+        <source src="Jessie J - Flashlight.ogg" type="audio/ogg">
+        <source src="Jessie J - Flashlight.wav" type="audio/wav">
         Seu navegador não suporta áudio.
     </audio>
 
@@ -189,7 +191,7 @@ Porque <span class="destaque-maiusculo">TU MERECES</span> tudo isso e muito mais
         const audio = document.getElementById('backgroundMusic');
         const playMusicButton = document.getElementById('playMusicButton');
 
-        // Tenta iniciar a música automaticamente
+        // Tenta iniciar a música automaticamente (será bloqueado na maioria dos navegadores)
         audio.play().catch((error) => {
             console.warn('Autoplay bloqueado:', error.message);
             // Mostra o botão para iniciar a música manualmente
@@ -198,8 +200,13 @@ Porque <span class="destaque-maiusculo">TU MERECES</span> tudo isso e muito mais
 
         // Adiciona evento ao botão para iniciar a música
         playMusicButton.addEventListener('click', () => {
-            audio.play();
-            playMusicButton.style.display = 'none';
+            audio.play().then(() => {
+                console.log('Música iniciada com sucesso!');
+                playMusicButton.style.display = 'none'; // Esconde o botão após iniciar
+            }).catch((error) => {
+                console.error('Erro ao reproduzir a música:', error.message);
+                alert('Não foi possível reproduzir a música. Verifique as permissões do navegador.');
+            });
         });
     </script>
 </body>
