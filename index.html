@@ -70,6 +70,19 @@
             font-weight: bold;
             text-decoration: underline;
         }
+
+        /* Estilo do Botão */
+        #playMusicButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #ff99cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none; /* Inicialmente oculto */
+        }
     </style>
 </head>
 <body>
@@ -84,8 +97,11 @@
     <!-- Mensagem Animada -->
     <div id="mensagem"></div>
 
+    <!-- Botão para Iniciar a Música -->
+    <button id="playMusicButton">Clique Aqui para Iniciar a Música</button>
+
     <!-- Música de Fundo -->
-    <audio preload="auto" autoplay loop>
+    <audio id="backgroundMusic" preload="auto" loop>
         <source src="Jessie J - Flashlight.mp3" type="audio/mpeg">
         Seu navegador não suporta áudio.
     </audio>
@@ -168,6 +184,23 @@ Porque <span class="destaque-maiusculo">TU MERECES</span> tudo isso e muito mais
 
             typeMessage();
         }
+
+        // Configuração da Música
+        const audio = document.getElementById('backgroundMusic');
+        const playMusicButton = document.getElementById('playMusicButton');
+
+        // Tenta iniciar a música automaticamente
+        audio.play().catch((error) => {
+            console.warn('Autoplay bloqueado:', error.message);
+            // Mostra o botão para iniciar a música manualmente
+            playMusicButton.style.display = 'block';
+        });
+
+        // Adiciona evento ao botão para iniciar a música
+        playMusicButton.addEventListener('click', () => {
+            audio.play();
+            playMusicButton.style.display = 'none';
+        });
     </script>
 </body>
 </html>
