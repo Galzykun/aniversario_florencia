@@ -100,6 +100,25 @@
             font-weight: bold;
             text-decoration: underline;
         }
+
+        /* Estilo da Página Final */
+        #finalPage {
+            text-align: center;
+            display: none; /* Inicialmente oculto */
+        }
+
+        #finalPage h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 3rem;
+            color: #ff6f61;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        #finalPage .heart {
+            font-size: 5rem;
+            color: #ff6f61;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -121,6 +140,12 @@
     <!-- Mensagem Animada -->
     <div id="mensagem"></div>
 
+    <!-- Página Final -->
+    <div id="finalPage">
+        <h1>Jamais Esqueceria Do Seu Aniversário Bebê</h1>
+        <div class="heart">❤️</div>
+    </div>
+
     <!-- Música de Fundo -->
     <audio id="backgroundMusic" preload="auto" loop>
         <source src="Jessie J - Flashlight.mp3" type="audio/mpeg">
@@ -133,6 +158,8 @@
         const simButton = document.getElementById('simButton');
         const naoButton = document.getElementById('naoButton');
         const slideshow = document.querySelector('.slideshow');
+        const mensagem = document.getElementById('mensagem');
+        const finalPage = document.getElementById('finalPage');
         const audio = document.getElementById('backgroundMusic');
 
         // Função para iniciar o slideshow
@@ -152,7 +179,7 @@
             setTimeout(() => {
                 clearInterval(slideshowInterval);
                 slideshow.style.display = 'none';
-                document.getElementById('mensagem').style.display = 'block';
+                mensagem.style.display = 'block';
                 startTypingMessage();
             }, slideshowImages.length * 5000);
         }
@@ -192,14 +219,19 @@ Que esse novo ciclo seja repleto de realizações,
 De felicidades infinitas e <span class="destaque-negrito destaque-caixa-alta">SONHOS ALCANÇADOS</span>,
 Porque <span class="destaque-maiusculo">TU MERECES</span> tudo isso e muito mais. ✨`;
 
-            const messageElement = document.getElementById('mensagem');
             let index = 0;
 
             function typeMessage() {
                 if (index < fullText.length) {
-                    messageElement.innerHTML = fullText.slice(0, index);
+                    mensagem.innerHTML = fullText.slice(0, index);
                     index++;
                     setTimeout(typeMessage, 50);
+                } else {
+                    // Após terminar a mensagem, aguarda 1 minuto e 30 segundos antes de mostrar a página final
+                    setTimeout(() => {
+                        mensagem.style.display = 'none';
+                        finalPage.style.display = 'block';
+                    }, 90000); // 90000ms = 1 minuto e 30 segundos
                 }
             }
 
