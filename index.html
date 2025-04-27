@@ -50,30 +50,6 @@
             scrollbar-color: #ffffff #ff99cc; /* Cor personalizada para a barra de rolagem */
         }
 
-        /* Estilo para palavras destacadas */
-        .destaque-negrito {
-            font-weight: bold;
-            font-family: Arial, sans-serif;
-        }
-        .destaque-italico {
-            font-style: italic;
-            font-family: 'Pacifico', cursive;
-        }
-        .destaque-sublinhado {
-            text-decoration: underline;
-        }
-        .destaque-caixa-alta {
-            text-transform: uppercase;
-        }
-        .destaque-maiusculo {
-            font-style: italic;
-            text-transform: uppercase;
-        }
-        .destaque-combinado {
-            font-weight: bold;
-            text-decoration: underline;
-        }
-
         /* Estilização Responsiva para Celular */
         @media (max-width: 600px) {
             #mensagem {
@@ -202,13 +178,28 @@ Porque <span class="destaque-maiusculo">TU MERECES</span> tudo isso e muito mais
                 document.body.removeChild(invisibleButton); // Remove o botão invisível
             }).catch((error) => {
                 console.error('Erro ao iniciar o áudio:', error.message);
-                alert('Não foi possível iniciar o áudio automaticamente. Clique no botão abaixo para iniciar manualmente.');
+                alert('Não foi possível iniciar o áudio automaticamente. Certifique-se de que o site está sendo servido em HTTPS.');
             });
         }
 
-        // Inicia o áudio e o slideshow juntos
+        // Sincroniza áudio e slideshow
         window.addEventListener('load', () => {
-            simulateUserInteraction(); // Simula a interação do usuário
+            // Inicia o áudio automaticamente
+            simulateUserInteraction();
+
+            // Exibe o primeiro slide
+            slideshowImages[currentIndex].style.display = 'block';
+
+            // Alterna os slides a cada 5 segundos
+            const slideshowInterval = setInterval(showNextImage, 5000);
+
+            // Para o slideshow após o tempo total
+            setTimeout(() => {
+                clearInterval(slideshowInterval); // Para o slideshow
+                document.querySelector('.slideshow').style.display = 'none'; // Oculta o slideshow
+                document.getElementById('mensagem').style.display = 'block'; // Exibe a mensagem
+                startTypingMessage(); // Inicia a animação de digitação
+            }, slideshowImages.length * 5000); // Tempo total do slideshow
         });
 
         // Garante que o áudio não repita
