@@ -5,28 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mensagem de Aniversário Especial</title>
     <style>
+        /* Estilo Geral */
         body {
             background: linear-gradient(135deg, #ff99cc, #87ceeb); /* Rosa para azul */
             color: #fff; /* Texto branco */
             font-family: 'Courier New', Courier, monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
-            overflow: hidden;
+            overflow: hidden; /* Remove a barra de rolagem */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Centraliza verticalmente */
+            align-items: center; /* Centraliza horizontalmente */
+            height: 100vh;
         }
+
+        /* Estilo do Slideshow */
+        .slideshow {
+            position: relative;
+            width: 80%;
+            max-width: 600px;
+            height: auto;
+            margin: auto;
+        }
+
+        .slideshow img {
+            width: 100%;
+            height: auto;
+            display: none;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        /* Estilo da Mensagem */
         #mensagem {
             font-size: 1.2rem;
             white-space: pre-wrap; /* Mantém quebras de linha */
             overflow: hidden;
             border-right: 2px solid #fff; /* Cursor piscando */
-            animation: typing 40s steps(50, end), blink-caret 0.75s step-end infinite;
+            animation: typing 40s steps(50, end) 20s forwards, blink-caret 0.75s step-end infinite;
+            text-align: center;
+            max-width: 80%;
+            display: none; /* Inicialmente oculto */
         }
+
         @keyframes typing {
             from { width: 0; }
             to { width: 100%; }
         }
+
         @keyframes blink-caret {
             from, to { border-color: transparent; }
             50% { border-color: #fff; }
@@ -58,6 +84,15 @@
     </style>
 </head>
 <body>
+    <!-- Slideshow de Fotos -->
+    <div class="slideshow">
+        <img src="imagem1.jpg" alt="Imagem 1">
+        <img src="imagem2.jpg" alt="Imagem 2">
+        <img src="imagem3.jpg" alt="Imagem 3">
+        <img src="imagem4.jpg" alt="Imagem 4">
+    </div>
+
+    <!-- Mensagem Animada -->
     <div id="mensagem">
         ✨ <span class="destaque-combinado">Mensagem de Aniversário Especial</span> ✨
         🎈 <span class="destaque-negrito">Você é mais forte do que imagina,</span>
@@ -93,32 +128,40 @@
         Porque <span class="destaque-maiusculo">TU MERECES</span> tudo isso e muito mais. ✨
     </div>
 
-    <!-- Música de fundo -->
-    <audio controls preload="auto" autoplay loop>
+    <!-- Música de Fundo -->
+    <audio preload="auto" autoplay loop>
         <source src="Jessie J - Flashlight.mp3" type="audio/mpeg">
         Seu navegador não suporta áudio.
     </audio>
 
-    <!-- Imagens Decorativas -->
-    <img src="imagem1.jpg" alt="Imagem 1" style="display: block; margin: auto; max-width: 100%; height: auto;">
-    <img src="imagem2.jpg" alt="Imagem 2" style="display: block; margin: auto; max-width: 100%; height: auto;">
-    <img src="imagem3.jpg" alt="Imagem 3" style="display: block; margin: auto; max-width: 100%; height: auto;">
-    <img src="imagem4.jpg" alt="Imagem 4" style="display: block; margin: auto; max-width: 100%; height: auto;">
-
     <script>
-        const messageElement = document.getElementById('mensagem');
-        const fullText = messageElement.textContent;
-        let index = 0;
+        // Configuração do Slideshow
+        const slideshowImages = document.querySelectorAll('.slideshow img');
+        let currentIndex = 0;
 
-        function typeMessage() {
-            if (index < fullText.length) {
-                messageElement.textContent = fullText.slice(0, index);
-                index++;
-                setTimeout(typeMessage, 50); // Ajuste o tempo para controlar a velocidade de digitação
-            }
+        function showNextImage() {
+            // Oculta a imagem atual
+            slideshowImages[currentIndex].style.display = 'none';
+
+            // Avança para a próxima imagem
+            currentIndex = (currentIndex + 1) % slideshowImages.length;
+
+            // Exibe a próxima imagem
+            slideshowImages[currentIndex].style.display = 'block';
         }
 
-        typeMessage();
+        // Exibe a primeira imagem inicialmente
+        slideshowImages[currentIndex].style.display = 'block';
+
+        // Alterna as imagens a cada 5 segundos
+        const slideshowInterval = setInterval(showNextImage, 5000);
+
+        // Após terminar o slideshow, exibe a mensagem
+        setTimeout(() => {
+            clearInterval(slideshowInterval); // Para o slideshow
+            document.querySelector('.slideshow').style.display = 'none'; // Oculta o slideshow
+            document.getElementById('mensagem').style.display = 'block'; // Exibe a mensagem
+        }, slideshowImages.length * 5000); // Tempo total do slideshow (número de imagens * 5 segundos)
     </script>
 </body>
 </html>
